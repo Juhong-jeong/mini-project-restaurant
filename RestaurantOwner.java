@@ -8,39 +8,45 @@ public class RestaurantOwner {
 	 * menu. Declared static so as to share same menu for all customers.
 	 */
 	static HashMap<String, Float> menu;
-
+	static String restaurantID = "restaurant";
+	static String restaurantPW = "rest123";
+	
 	RestaurantOwner() {
 		menu = new HashMap<String, Float>();
 	}
 
-	boolean authorize(String username, String password) {
-		return username.equals("restaurant") && password.equals("rest123");
+	public boolean authorize(String username, String password) {
+		return username.equals(restaurantID) && password.equals(restaurantPW);
+	}
+	
+	public boolean checkmenu(String food) {//음식이 메뉴에 있는지 확인하는 것을 반복적으로 해서 만듬
+		return menu.containsKey(food);
 	}
 
-	boolean addItem(String food, float price) {
+	public boolean addItem(String food, float price) {
 		/*
 		 * If menu already contains the food item don't add it in menu again and return
 		 * false, Else add the food item in menu and return true.
 		 */
-		if (menu.containsKey(food))
+		if (checkmenu(food))
 			return false;
 		menu.put(food, price);
 		return true;
 	}
 
-	boolean deleteItem(String food) {
+	public boolean deleteItem(String food) {
 		/*
 		 * First check if food item exists in menu. If exists then delete and return
 		 * true, else return false
 		 */
-		if (menu.containsKey(food)) {
+		if (checkmenu(food)) {
 			menu.remove(food);
 			return true;
 		} else
 			return false;
 	}
 
-	boolean update(String food, float price) {
+	public boolean update(String food, float price) {
 		/*
 		 * First delete the existing food. If no such food is found, it adds food to the
 		 * menu, else updates the price
@@ -55,10 +61,9 @@ public class RestaurantOwner {
 
 	}
 
-	void displayMenu() {
+	public void displayMenu() {
 		if (menu.isEmpty()) {
-			System.out.println("Menu empty.");
-			return;
+			printemptymenu();
 		}
 		Set<String> foodNames = new HashSet<String>();
 		foodNames = menu.keySet();
@@ -69,5 +74,9 @@ public class RestaurantOwner {
 			System.out.println(food + "\t" + menu.get(food));
 		}
 		System.out.println("-------------------------------------");
+	}
+
+	public void printemptymenu() {
+		System.out.println("Menu empty.");
 	}
 }
